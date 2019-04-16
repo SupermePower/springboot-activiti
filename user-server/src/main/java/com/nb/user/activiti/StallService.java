@@ -47,7 +47,6 @@ public class StallService {
     @Resource
     private RepositoryService repositoryService;
 
-
     @Resource
     private HistoryService historyService;
 

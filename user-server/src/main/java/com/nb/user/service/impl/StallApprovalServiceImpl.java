@@ -2,6 +2,7 @@ package com.nb.user.service.impl;
 
 import com.nb.user.activiti.StallService;
 import com.nb.user.dao.StallApprovalMapper;
+import com.nb.user.idworker.IdWorker;
 import com.nb.user.model.StallApproval;
 import com.nb.user.service.StallApprovalService;
 import com.nb.user.util.DozerBeanMapperUtil;
@@ -32,16 +33,22 @@ public class StallApprovalServiceImpl implements StallApprovalService {
     @Autowired
     private RuntimeService runtimeService;
 
+    @Autowired
+    private IdWorker idWorker;
+
     /**
      * 保存审批信息
      *
-     * @param stallApproval 审批信息
+     * @param msg 审批信息
      */
     @Override
-    public void saveStallApproval(StallApproval stallApproval) {
-        Integer insert = stallApprovalMapper.insert(stallApproval);
+    public void saveStallApproval(String msg) {
+        StallApproval approval = new StallApproval();
+        approval.setId(idWorker.nextId());
+        approval.setMsg(msg);
+        Integer insert = stallApprovalMapper.insert(approval);
         if (insert == 1) {
-            stallService.startProcess(stallApproval.getId().toString());
+            stallService.startProcess(approval.getId().toString());
         }
     }
 

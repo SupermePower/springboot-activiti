@@ -1,6 +1,5 @@
 package com.nb.user.service;
 
-import com.nb.user.model.StallApproval;
 import com.nb.user.vo.StallApprovalVO;
 
 import java.util.List;
@@ -15,9 +14,9 @@ public interface StallApprovalService {
     /**
      * 保存审批信息
      *
-     * @param stallApproval 审批信息
+     * @param msg 审批信息
      */
-    void saveStallApproval(StallApproval stallApproval);
+    void saveStallApproval(String msg);
 
     /**
      * 获取待审批任务
