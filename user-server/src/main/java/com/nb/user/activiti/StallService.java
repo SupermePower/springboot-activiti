@@ -2,6 +2,7 @@ package com.nb.user.activiti;
 
 import com.nb.user.dao.StallApprovalMapper;
 import com.nb.user.model.StallApproval;
+import lombok.extern.slf4j.Slf4j;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.*;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -33,6 +34,7 @@ import java.util.Map;
  * @date 2019/4/15 15:22
  */
 @Service
+@Slf4j
 public class StallService {
 
     @Resource
@@ -62,12 +64,13 @@ public class StallService {
      * @param businessKey 业务主键
      */
     public void startProcess(String businessKey) {
+        log.info("start process businessKey -> {}", businessKey);
         runtimeService.startProcessInstanceByKey("StallProcess", businessKey);
-        System.out.println("启动审批流");
+        log.info("end process businessKey");
     }
 
     /**
-     * 修改状态
+     * 修改状态(service-task自动调用)
      *
      * @param delegateExecution 代理
      * @param status            状态
@@ -80,7 +83,7 @@ public class StallService {
     }
 
     /**
-     * 获取审批人-BDM
+     * 获取审批人-BDM(user-task自动调用)
      *
      * @param delegateExecution 执行实例的代理对象
      * @return BDM
@@ -91,7 +94,7 @@ public class StallService {
     }
 
     /**
-     * 获取审批人-总监
+     * 获取审批人-总监(user-task自动调用)
      *
      * @param delegateExecution 执行实例的代理对象
      * @return 总监
@@ -102,7 +105,7 @@ public class StallService {
     }
 
     /**
-     * 查询相关的审批人
+     * 获取当前用待审批任务
      *
      * @param userId 用户主键
      * @return 任务集合
@@ -119,11 +122,13 @@ public class StallService {
      * @param audit  审批意见
      */
     public void completeTaskByUser(String taskId, String userId, String audit) {
+        log.info("start complete task \n taskId -> {} \n userId -> {} \n audit -> {}", taskId, userId, audit);
         // 认领任务
         taskService.claim(taskId, userId);
         Map<String, Object> var = new HashMap<>(1);
         var.put("audit", audit);
         taskService.complete(taskId, var);
+        log.info("end complete task");
     }
 
     /**
