@@ -23,10 +23,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author fly
@@ -56,7 +53,7 @@ public class StallService {
     private ProcessEngineFactoryBean processEngine;
 
     @Resource
-    ProcessEngineConfiguration processEngineConfiguration;
+    private ProcessEngineConfiguration processEngineConfiguration;
 
     /**
      * 启动审批流程
@@ -88,9 +85,9 @@ public class StallService {
      * @param delegateExecution 执行实例的代理对象
      * @return BDM
      */
-    public String findApproverBDM(DelegateExecution delegateExecution) {
+    public List<String> findApproverBDM(DelegateExecution delegateExecution) {
         //TODO 获取审批人主键
-        return "BDMID";
+        return Arrays.asList("BDMID", "BDMID2") ;
     }
 
     /**
@@ -123,7 +120,7 @@ public class StallService {
      */
     public void completeTaskByUser(String taskId, String userId, String audit) {
         log.info("start complete task \n taskId -> {} \n userId -> {} \n audit -> {}", taskId, userId, audit);
-        // 认领任务
+        // 认领任务-审批
         taskService.claim(taskId, userId);
         Map<String, Object> var = new HashMap<>(1);
         var.put("audit", audit);
@@ -151,7 +148,7 @@ public class StallService {
 
         List<HistoricActivityInstance> highLightedActivitiList = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).list();
         //高亮环节id集合
-        List<String> highLightedActivitis = new ArrayList<String>();
+        List<String> highLightedActivitis = new ArrayList<>();
 
         //高亮线路id集合
         List<String> highLightedFlows = getHighLightedFlows(definitionEntity, highLightedActivitiList);
