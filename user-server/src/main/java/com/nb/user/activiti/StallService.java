@@ -51,7 +51,7 @@ public class StallService {
     private HistoryService historyService;
 
     @Autowired
-    ProcessEngineFactoryBean processEngine;
+    private ProcessEngineFactoryBean processEngine;
 
     @Resource
     ProcessEngineConfiguration processEngineConfiguration;
@@ -69,7 +69,8 @@ public class StallService {
     /**
      * 修改状态
      *
-     * @param status 状态
+     * @param delegateExecution 代理
+     * @param status            状态
      */
     public void changeStatus(DelegateExecution delegateExecution, String status) {
         String processInstanceBusinessKey = delegateExecution.getProcessBusinessKey();
