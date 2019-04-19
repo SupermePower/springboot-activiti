@@ -62,7 +62,7 @@ public class StallService {
      */
     public void startProcess(String businessKey) {
         log.info("start process businessKey -> {}", businessKey);
-        runtimeService.startProcessInstanceByKey("StallProcess", businessKey);
+        runtimeService.startProcessInstanceByKey("StallProcessChoose", businessKey);
         log.info("end process businessKey");
     }
 
@@ -122,8 +122,9 @@ public class StallService {
         log.info("start complete task \n taskId -> {} \n userId -> {} \n audit -> {}", taskId, userId, audit);
         // 认领任务-审批
         taskService.claim(taskId, userId);
-        Map<String, Object> var = new HashMap<>(1);
+        Map<String, Object> var = new HashMap<>(2);
         var.put("audit", audit);
+        var.put("discount", 0.06);
         taskService.complete(taskId, var);
         log.info("end complete task");
     }
