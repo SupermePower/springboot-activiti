@@ -46,6 +46,7 @@ public class StallApprovalServiceImpl implements StallApprovalService {
         StallApproval approval = new StallApproval();
         approval.setId(idWorker.nextId());
         approval.setMsg(msg);
+        approval.setProcessInitiator(idWorker.nextId());
         Integer insert = stallApprovalMapper.insert(approval);
         if (insert == 1) {
             stallService.startProcess(approval.getId().toString());

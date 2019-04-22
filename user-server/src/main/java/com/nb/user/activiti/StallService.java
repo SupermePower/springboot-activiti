@@ -86,8 +86,13 @@ public class StallService {
      * @return BDM
      */
     public List<String> findApproverBDM(DelegateExecution delegateExecution) {
+        String processInstanceBusinessKey = delegateExecution.getProcessBusinessKey();
+        StallApproval stallApproval = stallApprovalMapper.selectById(Long.parseLong(processInstanceBusinessKey));
+        System.out.println(stallApproval);
         //TODO 获取审批人主键
-        return Arrays.asList("BDMID", "BDMID2") ;
+        List<String> bdmList = Arrays.asList("BDMID", "BDMID2");
+        System.out.println(bdmList);
+        return bdmList;
     }
 
     /**
@@ -98,7 +103,9 @@ public class StallService {
      */
     public String findApproverZJ(DelegateExecution delegateExecution) {
         //TODO 获取审批人主键
-        return "ZONGJIANID";
+        String zongjian = "ZONGJIANID";
+        System.out.println(zongjian);
+        return zongjian;
     }
 
     /**
@@ -124,7 +131,9 @@ public class StallService {
         taskService.claim(taskId, userId);
         Map<String, Object> var = new HashMap<>(2);
         var.put("audit", audit);
-        var.put("discount", 0.06);
+        var.put("discount", 0.1);
+        //TODO 审批并设置下一审批人主键
+        var.put("userId", "NEWZONGJIANID");
         taskService.complete(taskId, var);
         log.info("end complete task");
     }

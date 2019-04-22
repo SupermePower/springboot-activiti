@@ -22,6 +22,8 @@ import java.sql.Timestamp;
 public class StallApproval {
     @TableId(value = "id")
     private Long id;
+    @TableField(value = "process_initiator")
+    private Long processInitiator;
     @TableField(value = "status")
     private String status;
     @TableField(value = "msg")
